@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VeriTouch: Verified Visuo-Tactile World Models that Improve Robot Policy Learning</title>
+  <meta name="description" content="VeriTouch generates visuo-tactile demonstrations with a world model, verifies them across vision and touch, and extracts actions to improve robot policy learning.">
+  <meta property="og:title" content="VeriTouch">
+  <meta property="og:description" content="Verified Visuo-Tactile World Models that Improve Robot Policy Learning">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zjuscl.github.io/veritouch/">
+  <meta property="og:image" content="https://zjuscl.github.io/veritouch/assets/fig/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23122033'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='34' font-weight='700' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="hero.css">
+  <link rel="stylesheet" href="page.css">
+</head>
+<body>
+
+<header class="ft-navbar" id="ft-navbar">
+  <div class="ft-navbar-inner">
+    <div class="ft-navbar-left">
+      <a class="ft-brand" href="#top">VeriTouch</a>
+      <nav class="ft-nav-links" aria-label="Primary navigation"><a href="#pipeline">Method</a><a href="#results">Results</a><a href="#generated">Generation</a><a href="#verification">Verification</a><a href="#idm">Actions</a></nav>
+    </div>
+    <div class="ft-navbar-actions">
+      <!-- TODO(links): point Paper at the PDF once public -->
+      <span class="ft-btn-ghost is-off" role="link" aria-disabled="true" title="Coming soon">Paper</span><a href="#summary-video" class="ft-btn-dark">Video</a>
+    </div>
+    <button class="ft-navbar-toggle" id="ft-nav-toggle" aria-label="All sections" aria-expanded="false" aria-controls="ft-nav-mobile"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <nav class="ft-nav-mobile" id="ft-nav-mobile" aria-label="All sections">
+    <a href="#summary-video">Video</a><a href="#abstract">Abstract</a><a href="#pipeline">How it works</a><a href="#results">Results</a><a href="#generated">Generated vs. real</a><a href="#verification">Verification</a><a href="#idm">Action extraction</a><a href="#bibtex">BibTeX</a>
+  </nav>
+</header>
+
+<!-- ============================================================ HERO -->
+<section id="top" class="vt-hero">
+  <div class="vt-head">
+    <h1 class="vt-title">VeriTouch</h1>
+    <h2 class="vt-subtitle"><span>Verified Visuo-Tactile World Models that</span> <span>Improve Robot Policy Learning</span></h2>
+    <div class="vt-authors"><span>Shuxun Wang<sup>1,*</sup></span> <span>Xiaonan Jiang<sup>2,*</sup></span> <span>Zhaoyu Wang<sup>1,*</sup></span> <span>Ziyuan Chu<sup>1,*</sup></span> <span>Xihang Yue<sup>1</sup></span> <span>Pengfei Liu<sup>3</sup></span> <span>Haodong Zhu<sup>4</sup></span> <span>Shiqi Liu<sup>5</sup></span> <span>Mingzhi Zheng<sup>6</sup></span> <span>Liang Su<sup>7</sup></span> <span>Linchao Zhu<sup>1,†</sup></span></div>
+    <button type="button" class="vt-aff-t" id="vtAffT" aria-expanded="false" aria-controls="vtAffil">Affiliations <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+    <div class="vt-affil" id="vtAffil"><span><sup>1</sup>Zhejiang University</span><span><sup>2</sup>City University of Hong Kong</span><span><sup>3</sup>Nanyang Technological University</span><span><sup>4</sup>Technical University of Munich</span><span><sup>5</sup>Zhejiang University City College</span><span><sup>6</sup>Nanjing University</span><span><sup>7</sup>Hangzhou Institute for Advanced Study, UCAS</span></div>
+    <div class="vt-notes"><span><sup>*</sup>Equal contribution</span><span><sup>†</sup>Corresponding author</span></div>
+    <div class="vt-buttons">
+      <button type="button" class="vt-btn" disabled title="Coming soon"><i class="fas fa-file-pdf"></i>Paper</button>
+      <a href="#summary-video" class="vt-btn is-dark"><i class="fab fa-youtube"></i>Video</a>
+      <button type="button" class="vt-btn" disabled title="Coming soon"><i class="fa-solid fa-scroll"></i>arXiv</button>
+      <button type="button" class="vt-btn" disabled title="Coming soon"><i class="fab fa-github"></i>Code</button>
+    </div>
+  </div>
+
+  <div class="vt-film" id="summary-video">
+    <video controls playsinline preload="metadata" poster="assets/video/film/veritouch_film.jpg">
+      <source src="assets/video/film/veritouch_film.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- ============================================================ ABSTRACT -->
+<section class="vt-sec vt-abs" id="abstract" aria-labelledby="abstract-title">
+  <div class="vt-wrap">
+    <span class="vt-eb" id="abstract-title">Abstract</span>
+    <p>Robots learn contact-rich skills from visuo-tactile demonstrations, but collecting them on real hardware is slow and costly, and simulators rarely capture realistic contact. <b>VeriTouch</b> turns a world model into a source of such data: <b>VeriGen</b> generates dual-view video and bilateral touch from two first frames and an instruction, <b>VeriEval</b> keeps only the rollouts whose vision and touch are physically consistent, and <b>VeriIDM</b> recovers the robot's actions from the video. Mixed with real demonstrations, the verified synthetic data improves all four policies we test on five real-world tasks, and scaling it up more than doubles success without collecting more real data.</p>
+  </div>
+</section>
+
+<!-- ============================================================ PIPELINE -->
+<section class="vt-flow-sec" id="pipeline" aria-labelledby="pipeline-title">
+  <header class="vt-sh" style="--c:var(--vt-eval)">
+    <span class="vt-eb">How it works</span>
+    <h2 id="pipeline-title">One batch through the pipeline</h2>
+    <p>VeriGen generates six rollouts from two first frames. VeriEval rejects four of them, VeriIDM labels the two that pass with actions, and they join real demonstrations to train policies. Hover a rollout or a check to see why it was kept or dropped.</p>
+  </header>
+  <!-- One batch through the pipeline: VeriGen -> VeriEval (four checks, dropped at the first failure) -> VeriIDM -> policy.
+       Six real rollouts with their real verdicts (hero-data.js); driven by hero.js. -->
+  <div class="vt-pipe" id="vtPipe">
+    <div class="vt-bar">
+      <nav class="vt-rail" aria-label="Pipeline stages">
+        <button type="button" style="--c:var(--vt-gen)">Generate</button><i></i><button type="button" style="--c:var(--vt-eval)">Verify</button><i></i><button type="button" style="--c:var(--vt-idm)">Extract</button><i></i><button type="button" style="--c:var(--vt-pol)">Learn</button>
+      </nav>
+      <button type="button" class="vt-ctl" id="vtCtl" aria-label="Pause"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+    </div>
+    <div class="vt-flow">
+      <article class="vt-stage" style="--c:var(--vt-gen)">
+        <header><span class="vt-n">1</span><h3>VeriGen</h3><a class="vt-go" href="#generated" title="Generated vs. real" aria-label="VeriGen: Generated vs. real"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
+        <p class="vt-k">Generates video and touch from a first frame and an instruction</p>
+        <div class="vt-inputs vt-a" id="vtInputs">
+          <figure><img src="assets/fig/hero_init_egg.jpg" alt="First frame, egg pick"><figcaption>egg</figcaption></figure>
+          <figure><img src="assets/fig/hero_init_chip.jpg" alt="First frame, chip pick"><figcaption>chip</figcaption></figure>
+        </div>
+        <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
+        <div class="vt-model vt-a" id="vtWM"><span class="vt-mt">World model</span>
+          <div class="vt-experts"><span class="v">Video expert</span><span class="t">Tactile expert</span></div><span class="vt-ja">joint attention</span></div>
+        <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
+        <div class="vt-batch" id="vtBatch"></div>
+      </article>
+      <div class="vt-link" style="--c:var(--vt-eval)" aria-hidden="true"><i></i><span>6</span></div>
+      <article class="vt-stage" style="--c:var(--vt-eval)">
+        <header><span class="vt-n">2</span><h3>VeriEval</h3><a class="vt-go" href="#verification" title="Why verify" aria-label="VeriEval: Why verify"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
+        <p class="vt-k">Four checks in order; a rollout is dropped at its first failure</p>
+        <div class="vt-grid" id="vtGrid"></div>
+        <div class="vt-lens is-empty" id="vtLens" aria-live="polite"></div>
+      </article>
+      <div class="vt-link" style="--c:var(--vt-idm)" aria-hidden="true"><i></i><span>2</span></div>
+      <article class="vt-stage" style="--c:var(--vt-idm)">
+        <header><span class="vt-n">3</span><h3>VeriIDM</h3><a class="vt-go" href="#idm" title="Action extraction" aria-label="VeriIDM: Action extraction"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
+        <p class="vt-k">Recovers an action for every frame from both camera views</p>
+        <div class="vt-lab" id="vtLab"></div>
+        <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
+        <div class="vt-model vt-idmbox vt-a" id="vtIDM">Inverse dynamics model</div>
+        <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
+        <div class="vt-acts vt-a" id="vtActs"><span>â<sub>0</sub></span><span>â<sub>1</sub></span><span class="is-gap">…</span><span>â<sub>T</sub></span></div>
+      </article>
+      <div class="vt-link" style="--c:var(--vt-pol)" aria-hidden="true"><i></i><span>2</span></div>
+      <article class="vt-stage" style="--c:var(--vt-pol)">
+        <header><span class="vt-n">4</span><h3>Policy</h3><a class="vt-go" href="#results" title="Results" aria-label="Policy: Results"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
+        <p class="vt-k">Trained on real and verified synthetic demos, mixed 1 : 1</p>
+        <div class="vt-mix" id="vtMix"><span class="r">real</span><span class="s">synthetic</span></div>
+        <div class="vt-pols vt-a" id="vtPols"><span>π0.5</span><span>ACT</span><span>N0-VTLA</span><span>FTP-1</span></div>
+        <figure class="vt-robot vt-a" id="vtRobot"><video muted playsinline loop preload="metadata" src="assets/video/policy/pair_egg_n0_l8_vt_main.mp4" poster="assets/video/policy/pair_egg_n0_l8_vt_main.jpg"></video><figcaption>real robot</figcaption></figure>
+        <div class="vt-sr vt-a" id="vtSR"><b><s>19.4%</s> → <output id="vtSRv">33.8%</output></b><small>mean success rate</small></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ RESULTS -->
+<section class="vt-sec is-white" id="results" aria-labelledby="results-title">
+  <div class="vt-wrap">
+    <header class="vt-sh" style="--c:var(--vt-pol)">
+      <span class="vt-eb">Real-robot results</span>
+      <h2 id="results-title">Verified synthetic data makes real robots better</h2>
+      <p>Four policies on five contact-rich tasks, tested on unseen layouts. Each policy is trained on the same real demonstrations, with and without verified synthetic ones.</p>
+    </header>
+    <figure class="vt-chart" id="polChart" aria-labelledby="polChartTitle"></figure>
+
+    <h3 class="vt-h3">Scaling synthetic data</h3>
+    <p class="vt-sub">N<sub>0</sub>-VTLA with the real demonstrations fixed and more verified synthetic ones added.</p>
+    <div class="vt-charts">
+      <figure class="vt-chart" id="scaleChart"></figure>
+      <figure class="vt-chart" id="radarChart"></figure>
+    </div>
+
+    <!-- TODO(cases): rollout pairs are being re-selected; swap EXEC in main.js when the new cases arrive -->
+    <h3 class="vt-h3">Real-world rollouts</h3>
+    <p class="vt-sub">Same robot, same task, same starting layout. N<sub>0</sub>-VTLA trained on real demonstrations only (left) vs. with VeriTouch data (right).</p>
+    <div class="vt-tabs" id="execTabs" role="tablist" aria-label="Task"></div>
+    <div id="execPair"></div>
+
+  </div>
+</section>
+
+<!-- ============================================================ GENERATED VS REAL -->
+<section class="vt-sec" id="generated" aria-labelledby="generated-title">
+  <div class="vt-wrap">
+    <header class="vt-sh" style="--c:var(--vt-gen)">
+      <span class="vt-eb">Generated vs. real</span>
+      <h2 id="generated-title">Generated rollouts that match real ones</h2>
+      <p>Held-out episodes from the same first frame and instruction. Both cameras and both fingertips play in sync; drag the divider to compare the real recording with VeriGen.</p>
+    </header>
+    <div class="vt-tabs" id="wmTasks" role="tablist" aria-label="Task"></div>
+    <div class="vt-cmp3" id="wmCmp">
+      <div class="vt-cmp3-views" id="wmViews"></div>
+      <div class="vt-cmp3-ctl"><button type="button" aria-label="Play or pause"><i class="fa-solid fa-pause"></i></button>
+        <input type="range" min="0" max="16" step="0.01" value="0" aria-label="Time"><output>0.0 / 0.0 s</output></div>
+    </div>
+
+    <!-- TODO(models): put each model's clip at assets/video/cmp/<task>_<model>.mp4 (+ .jpg) and add its name to READY in main.js -->
+    <details class="vt-more" id="models">
+      <summary><span><b>Compare with other world models</b><small>same first frame and instruction · follows the task above</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+      <div class="vt-mgrid" id="cmpGrid"></div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ VERIFICATION -->
+<section class="vt-sec is-white" id="verification" aria-labelledby="verification-title">
+  <div class="vt-wrap">
+    <header class="vt-sh" style="--c:var(--vt-eval)">
+      <span class="vt-eb">Why verify, and why touch</span>
+      <h2 id="verification-title">Checking touch is what makes the data useful</h2>
+      <p>N<sub>0</sub>-VTLA trained with the same candidate pool, data size and settings. Only the filter, or the touch input, changes.</p>
+    </header>
+    <div class="vt-charts">
+      <figure class="vt-chart" id="filterChart"></figure>
+      <figure class="vt-chart" id="touchChart"></figure>
+    </div>
+    <figure class="vt-fig" id="timingFig">
+      <figcaption>Video and touch can disagree on <b>when</b> contact happens. VeriEval keeps a rollout only when the contact the camera sees and the contact the touch sensors feel line up.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ ACTION EXTRACTION -->
+<section class="vt-sec" id="idm" aria-labelledby="idm-title">
+  <div class="vt-wrap">
+    <header class="vt-sh" style="--c:var(--vt-idm)">
+      <span class="vt-eb">Action extraction</span>
+      <h2 id="idm-title">Actions that work on the real robot</h2>
+      <p>VeriIDM recovers the end-effector pose and gripper closure for every frame from the two camera views. Each method's actions were replayed on the real robot from the same starting scene, on 10 held-out real trajectories per task.</p>
+    </header>
+    <figure class="vt-chart" id="idmChart"></figure>
+  </div>
+</section>
+
+<!-- ============================================================ BIBTEX -->
+<section class="vt-sec is-white" id="bibtex" aria-labelledby="bibtex-title">
+  <div class="vt-wrap vt-narrow">
+    <header class="vt-sh" style="--c:var(--vt-sub)">
+      <span class="vt-eb">Citation</span>
+      <h2 id="bibtex-title">BibTeX</h2>
+    </header>
+    <!-- TODO(bibtex): final entry -->
+    <div class="vt-bib"><button class="vt-copy" id="copyBib" type="button"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span></button><pre id="bib">@misc{veritouch2027,
+  title     = {VeriTouch: Verified Visuo-Tactile World Models that Improve Robot Policy Learning},
+  author    = {Wang, Shuxun and Jiang, Xiaonan and Wang, Zhaoyu and Chu, Ziyuan and Yue, Xihang and Liu, Pengfei and Zhu, Haodong and Liu, Shiqi and Zheng, Mingzhi and Su, Liang and Zhu, Linchao},
+  year      = {2027}
+}</pre></div>
+  </div>
+</section>
+
+<footer class="ft-footer">
+  <div class="ft-footer-grid">
+    <div class="ft-footer-col">
+      <span class="ft-footer-brand">VeriTouch</span>
+      <p class="ft-footer-tag">Verified Visuo-Tactile World Models that Improve Robot Policy Learning.</p>
+    </div>
+    <div class="ft-footer-col"><h4>Page</h4><a href="#top">Home</a><a href="#summary-video">Video</a><a href="#abstract">Abstract</a><a href="#bibtex">BibTeX</a></div>
+    <div class="ft-footer-col"><h4>Method</h4><a href="#pipeline">How it works</a><a href="#results">Results</a><a href="#generated">Generated vs. real</a><a href="#verification">Verification</a><a href="#idm">Action extraction</a></div>
+  </div>
+  <div class="ft-footer-legal">
+    <p>Page template based on <a href="https://nerfies.github.io/">Nerfies</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>).</p>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true"><img alt=""></div>
+<script src="main.js"></script>
+<script src="hero-data.js"></script>
+<script src="hero.js"></script>
+</body>
+</html>
