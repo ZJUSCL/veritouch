@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=IBM+Plex+Mono:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="hero.css">
   <link rel="stylesheet" href="page.css">
@@ -29,7 +29,7 @@
   <div class="ft-navbar-inner">
     <div class="ft-navbar-left">
       <a class="ft-brand" href="#top">VeriTouch</a>
-      <nav class="ft-nav-links" aria-label="Primary navigation"><a href="#pipeline">Method</a><a href="#results">Results</a><a href="#generated">Generation</a><a href="#verification">Verification</a><a href="#idm">Actions</a></nav>
+      <nav class="ft-nav-links" aria-label="Primary navigation"><a href="#pipeline">Pipeline</a><a href="#results">Results</a><a href="#generated" class="is-mod" style="--mc:var(--vt-gen)">VeriGen</a><a href="#verification" class="is-mod" style="--mc:var(--vt-eval)">VeriEval</a><a href="#idm" class="is-mod" style="--mc:var(--vt-idm)">VeriIDM</a></nav>
     </div>
     <div class="ft-navbar-actions">
       <!-- TODO(links): point Paper at the PDF once public -->
@@ -38,7 +38,7 @@
     <button class="ft-navbar-toggle" id="ft-nav-toggle" aria-label="All sections" aria-expanded="false" aria-controls="ft-nav-mobile"><i class="fa-solid fa-bars"></i></button>
   </div>
   <nav class="ft-nav-mobile" id="ft-nav-mobile" aria-label="All sections">
-    <a href="#summary-video">Video</a><a href="#abstract">Abstract</a><a href="#pipeline">How it works</a><a href="#results">Results</a><a href="#generated">Generated vs. real</a><a href="#verification">Verification</a><a href="#idm">Action extraction</a><a href="#bibtex">BibTeX</a>
+    <a href="#summary-video">Video</a><a href="#abstract">Abstract</a><a href="#pipeline">Pipeline</a><a href="#results">Results</a><a href="#generated">1 · VeriGen</a><a href="#verification">2 · VeriEval</a><a href="#idm">3 · VeriIDM</a><a href="#bibtex">BibTeX</a>
   </nav>
 </header>
 
@@ -70,16 +70,14 @@
 <section class="vt-sec vt-abs" id="abstract" aria-labelledby="abstract-title">
   <div class="vt-wrap">
     <span class="vt-eb" id="abstract-title">Abstract</span>
-    <p>Robots learn contact-rich skills from visuo-tactile demonstrations, but collecting them on real hardware is slow and costly, and simulators rarely capture realistic contact. <b>VeriTouch</b> turns a world model into a source of such data: <b>VeriGen</b> generates dual-view video and bilateral touch from two first frames and an instruction, <b>VeriEval</b> keeps only the rollouts whose vision and touch are physically consistent, and <b>VeriIDM</b> recovers the robot's actions from the video. Mixed with real demonstrations, the verified synthetic data improves all four policies we test on five real-world tasks, and scaling it up more than doubles success without collecting more real data.</p>
+    <p>Scaling visuo-tactile policy learning is constrained by the high cost of real-world data collection and the difficulty of building realistic simulations. Generative models offer a scalable source of training data, yet useful demonstrations require plausible tactile feedback, temporal alignment with visual contact, and accurate actions. To this end, we present <b>VeriTouch</b>, a framework for generating and verifying synthetic visuo-tactile trajectories for policy learning. Conditioned on initial images and task instructions, our world model, <b>VeriGen</b>, jointly generates high-fidelity dual-view videos and realistic tactile sequences over complete manipulation trajectories. By integrating a dedicated tactile expert with a pretrained video model, it captures realistic visual details and tactile deformation dynamics through joint visuo-tactile modeling. Our multimodal verifier <b>VeriEval</b> then checks visual quality while focusing on tactile reliability, assessing tactile realism, contact-force plausibility, and temporal alignment between visible contact and tactile signals, thereby directly filtering out unreliable sequences. Finally, our inverse dynamics model, <b>VeriIDM</b>, combines global scene information from both camera views with fine-grained gripper details and motion across neighboring frames to extract actions from verified videos. Experiments on five real-world tasks show that synthetic data improves all four evaluated policies, with further scaling synthetic trajectories substantially boosting policy performance without additional real-world data collection.</p>
   </div>
 </section>
 
 <!-- ============================================================ PIPELINE -->
 <section class="vt-flow-sec" id="pipeline" aria-labelledby="pipeline-title">
   <header class="vt-sh" style="--c:var(--vt-eval)">
-    <span class="vt-eb">How it works</span>
     <h2 id="pipeline-title">One batch through the pipeline</h2>
-    <p>VeriGen generates six rollouts from two first frames. VeriEval rejects four of them, VeriIDM labels the two that pass with actions, and they join real demonstrations to train policies. Hover a rollout or a check to see why it was kept or dropped.</p>
   </header>
   <!-- One batch through the pipeline: VeriGen -> VeriEval (four checks, dropped at the first failure) -> VeriIDM -> policy.
        Six real rollouts with their real verdicts (hero-data.js); driven by hero.js. -->
@@ -120,15 +118,24 @@
         <div class="vt-model vt-idmbox vt-a" id="vtIDM">Inverse dynamics model</div>
         <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
         <div class="vt-acts vt-a" id="vtActs"><span>â<sub>0</sub></span><span>â<sub>1</sub></span><span class="is-gap">…</span><span>â<sub>T</sub></span></div>
+        <div class="vt-sr vt-idmsr vt-a" id="vtIDMsr"><b>94.0%</b><small>of extracted actions succeed when replayed on the real robot (best baseline 84.0%)</small></div>
       </article>
       <div class="vt-link" style="--c:var(--vt-pol)" aria-hidden="true"><i></i><span>2</span></div>
       <article class="vt-stage" style="--c:var(--vt-pol)">
         <header><span class="vt-n">4</span><h3>Policy</h3><a class="vt-go" href="#results" title="Results" aria-label="Policy: Results"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
         <p class="vt-k">Trained on real and verified synthetic demos, mixed 1 : 1</p>
         <div class="vt-mix" id="vtMix"><span class="r">real</span><span class="s">synthetic</span></div>
-        <div class="vt-pols vt-a" id="vtPols"><span>π0.5</span><span>ACT</span><span>N0-VTLA</span><span>FTP-1</span></div>
-        <figure class="vt-robot vt-a" id="vtRobot"><video muted playsinline loop preload="metadata" src="assets/video/policy/pair_egg_n0_l8_vt_main.mp4" poster="assets/video/policy/pair_egg_n0_l8_vt_main.jpg"></video><figcaption>real robot</figcaption></figure>
-        <div class="vt-sr vt-a" id="vtSR"><b><s>19.4%</s> → <output id="vtSRv">33.8%</output></b><small>mean success rate</small></div>
+        <div class="vt-pols vt-a" id="vtPols" role="group" aria-label="Policy"></div>
+        <figure class="vt-robot vt-a" id="vtRobot">
+          <div class="vt-rcmp-hd"><span class="is-bad"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Real only</span><span class="is-ok"><i class="fa-solid fa-check" aria-hidden="true"></i> + VeriTouch</span></div>
+          <div class="vt-rcmp-vid">
+            <video muted playsinline loop preload="metadata" src="assets/video/policy/hero_n0_cmp.mp4" poster="assets/video/policy/hero_n0_cmp.jpg"></video>
+            <i class="vt-rcmp-sep" aria-hidden="true"></i>
+            <span class="vt-rcmp-tag" id="vtRobotTag">egg · same layout</span>
+          </div>
+          <figcaption id="vtRobotCap"><span class="is-bad">Misses the egg</span><span class="is-ok">Places egg on tray</span></figcaption>
+        </figure>
+        <div class="vt-sr vt-a" id="vtSR"><b><s id="vtSRa">31.3%</s> → <output id="vtSRv">51.7%</output></b><small><span id="vtSRn"><span class="vt-cal">𝒩</span><sub>0</sub>-VTLA</span>: real only → + VeriTouch</small><small class="vt-avg">Mean of the four policies: 19.4% → 33.8%</small></div>
       </article>
     </div>
   </div>
@@ -138,35 +145,28 @@
 <section class="vt-sec is-white" id="results" aria-labelledby="results-title">
   <div class="vt-wrap">
     <header class="vt-sh" style="--c:var(--vt-pol)">
-      <span class="vt-eb">Real-robot results</span>
-      <h2 id="results-title">Verified synthetic data makes real robots better</h2>
-      <p>Four policies on five contact-rich tasks, tested on unseen layouts. Each policy is trained on the same real demonstrations, with and without verified synthetic ones.</p>
+      <h2 id="results-title">Real-Robot Policy Results</h2>
     </header>
     <figure class="vt-chart" id="polChart" aria-labelledby="polChartTitle"></figure>
 
     <h3 class="vt-h3">Scaling synthetic data</h3>
-    <p class="vt-sub">N<sub>0</sub>-VTLA with the real demonstrations fixed and more verified synthetic ones added.</p>
     <div class="vt-charts">
       <figure class="vt-chart" id="scaleChart"></figure>
       <figure class="vt-chart" id="radarChart"></figure>
     </div>
 
-    <!-- TODO(cases): rollout pairs are being re-selected; swap EXEC in main.js when the new cases arrive -->
     <h3 class="vt-h3">Real-world rollouts</h3>
-    <p class="vt-sub">Same robot, same task, same starting layout. N<sub>0</sub>-VTLA trained on real demonstrations only (left) vs. with VeriTouch data (right).</p>
     <div class="vt-tabs" id="execTabs" role="tablist" aria-label="Task"></div>
     <div id="execPair"></div>
 
   </div>
 </section>
 
-<!-- ============================================================ GENERATED VS REAL -->
-<section class="vt-sec" id="generated" aria-labelledby="generated-title">
+<!-- ============================================================ 1 · VERIGEN -->
+<section class="vt-sec" id="generated" aria-labelledby="generated-title" style="--c:var(--vt-gen)">
   <div class="vt-wrap">
     <header class="vt-sh" style="--c:var(--vt-gen)">
-      <span class="vt-eb">Generated vs. real</span>
-      <h2 id="generated-title">Generated rollouts that match real ones</h2>
-      <p>Held-out episodes from the same first frame and instruction. Both cameras and both fingertips play in sync; drag the divider to compare the real recording with VeriGen.</p>
+      <h2 id="generated-title">VeriGen · Joint Video &amp; Touch Generation</h2>
     </header>
     <div class="vt-tabs" id="wmTasks" role="tablist" aria-label="Task"></div>
     <div class="vt-cmp3" id="wmCmp">
@@ -175,41 +175,120 @@
         <input type="range" min="0" max="16" step="0.01" value="0" aria-label="Time"><output>0.0 / 0.0 s</output></div>
     </div>
 
-    <!-- TODO(models): put each model's clip at assets/video/cmp/<task>_<model>.mp4 (+ .jpg) and add its name to READY in main.js -->
-    <details class="vt-more" id="models">
-      <summary><span><b>Compare with other world models</b><small>same first frame and instruction · follows the task above</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+    <h3 class="vt-h3">VeriGen vs. World Model Baselines</h3>
+    <div class="vt-mc-grid">
+      <div class="vt-chart vt-mc-card" id="mcTacCard">
+        <div class="vt-card-hd">
+          <h4 class="vc-h">Touch fidelity</h4>
+          <div class="vt-tac-leg" id="mcTacLeg"></div>
+        </div>
+        <div class="vt-viz-pad" id="mcTacViz"></div>
+      </div>
+      <div class="vt-chart vt-mc-card" id="mcVidCard">
+        <div class="vt-card-hd">
+          <h4 class="vc-h">Video fidelity</h4>
+          <div class="vt-seg" id="mcVid"><button type="button" class="is-active" data-m="map">2D Map</button><button type="button" data-m="psnr">PSNR ↑</button><button type="button" data-m="lpips">LPIPS ↓</button><button type="button" data-m="ifg">IF-G ↑</button></div>
+        </div>
+        <div class="vt-viz-pad" id="mcVidViz"></div>
+      </div>
+    </div>
+
+    <details class="vt-more is-cta" id="models">
+      <summary>
+        <span class="vt-cta-txt">
+          <b>Compare with other world models <em class="vt-cta-cnt">9 models</em></b>
+        </span>
+        <span class="vt-cta-btn"><span class="closed">Expand rollouts</span><span class="opened">Hide rollouts</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></span>
+      </summary>
       <div class="vt-mgrid" id="cmpGrid"></div>
     </details>
   </div>
 </section>
 
-<!-- ============================================================ VERIFICATION -->
-<section class="vt-sec is-white" id="verification" aria-labelledby="verification-title">
+<!-- ============================================================ 2 · VERIEVAL -->
+<section class="vt-sec is-white" id="verification" aria-labelledby="verification-title" style="--c:var(--vt-eval)">
   <div class="vt-wrap">
     <header class="vt-sh" style="--c:var(--vt-eval)">
-      <span class="vt-eb">Why verify, and why touch</span>
-      <h2 id="verification-title">Checking touch is what makes the data useful</h2>
-      <p>N<sub>0</sub>-VTLA trained with the same candidate pool, data size and settings. Only the filter, or the touch input, changes.</p>
+      <h2 id="verification-title">VeriEval · Visual &amp; Tactile Verification</h2>
     </header>
+
+    <ol class="vt-vsteps" id="vsSteps" role="tablist" aria-label="VeriEval verification stages">
+      <li><button type="button" role="tab" class="vt-vstep is-active" data-s="1" aria-selected="true" style="--sc:var(--vt-gen)"><span class="vt-vk">Stage 1</span><b>7-D VLM Judge</b></button></li>
+      <li><button type="button" role="tab" class="vt-vstep" data-s="2" aria-selected="false" style="--sc:var(--vt-eval)"><span class="vt-vk">Stage 2</span><b>Contact Timing</b></button></li>
+      <li><button type="button" role="tab" class="vt-vstep" data-s="3" aria-selected="false" style="--sc:var(--vt-idm)"><span class="vt-vk">Stage 3</span><b>Tactile Realism</b></button></li>
+    </ol>
+
+    <div class="vt-vpanels" id="vsPanels">
+      <!-- Stage 1: 7-D interactive ring (details inside center circle) + Judge accuracy gauges + Rejected example -->
+      <div class="vt-vpanel is-active" data-p="1" style="--sc:var(--vt-gen)">
+        <div class="vt-vs-grid two">
+          <div class="vt-chart vt-dims-card">
+            <div class="vt-card-hd compact"><span>Seven scoring dimensions</span></div>
+            <div class="vt-dims" id="dims">
+              <svg class="vt-dims-ring" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="150"/><circle class="scan" cx="200" cy="200" r="150"/></svg>
+              <div class="vt-dims-core" id="dimsCore" aria-live="polite"></div>
+            </div>
+          </div>
+          <div class="vt-chart vt-vs-quality" id="vqCard">
+            <div class="vt-card-hd compact"><span>Judge accuracy &amp; correlation</span></div>
+            <div class="vt-viz-pad" id="vqGauges"></div>
+          </div>
+        </div>
+        <div class="vt-chart vt-vs-example">
+          <div class="vt-card-hd compact"><span>Charger press · visual check</span><span class="vt-pill-bad">Discarded · R4</span></div>
+          <div class="vt-vs-pair">
+            <video muted playsinline loop preload="none" data-s="assets/video/eval/ep278_main.mp4" poster="assets/video/eval/ep278_main.jpg"></video>
+            <video muted playsinline loop preload="none" data-s="assets/video/eval/ep278_wrist.mp4" poster="assets/video/eval/ep278_wrist.jpg"></video>
+          </div>
+          <blockquote>“Gripper fingers clip into the power strip during the grasp.”</blockquote>
+        </div>
+      </div>
+
+      <!-- Stage 2: Contact timing -->
+      <div class="vt-vpanel" data-p="2" style="--sc:var(--vt-eval)">
+        <figure class="vt-fig" id="timingFig"></figure>
+      </div>
+
+      <!-- Stage 3: Tactile verifier F1 donut rings -->
+      <div class="vt-vpanel" data-p="3" style="--sc:var(--vt-idm)">
+        <div class="vt-chart vt-vs-check">
+          <div class="vt-card-hd compact"><span>Tactile verifier F1</span></div>
+          <div class="vt-viz-pad" id="tqRings"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="vt-h3">Ablation · VeriEval Filtering &amp; Synthetic Touch</h3>
     <div class="vt-charts">
       <figure class="vt-chart" id="filterChart"></figure>
       <figure class="vt-chart" id="touchChart"></figure>
     </div>
-    <figure class="vt-fig" id="timingFig">
-      <figcaption>Video and touch can disagree on <b>when</b> contact happens. VeriEval keeps a rollout only when the contact the camera sees and the contact the touch sensors feel line up.</figcaption>
-    </figure>
   </div>
 </section>
 
-<!-- ============================================================ ACTION EXTRACTION -->
-<section class="vt-sec" id="idm" aria-labelledby="idm-title">
+<!-- ============================================================ 3 · VERIIDM -->
+<section class="vt-sec" id="idm" aria-labelledby="idm-title" style="--c:var(--vt-idm)">
   <div class="vt-wrap">
     <header class="vt-sh" style="--c:var(--vt-idm)">
-      <span class="vt-eb">Action extraction</span>
-      <h2 id="idm-title">Actions that work on the real robot</h2>
-      <p>VeriIDM recovers the end-effector pose and gripper closure for every frame from the two camera views. Each method's actions were replayed on the real robot from the same starting scene, on 10 held-out real trajectories per task.</p>
+      <h2 id="idm-title">VeriIDM · Action Extraction from Dual-View Video</h2>
     </header>
-    <figure class="vt-chart" id="idmChart"></figure>
+
+    <div class="vt-idm-grid">
+      <div class="vt-chart vt-mc-card" id="idmCard">
+        <div class="vt-card-hd">
+          <h4 class="vc-h">Real-robot replay success (%)</h4>
+          <div class="vt-seg" id="idmTask"></div>
+        </div>
+        <div class="vt-viz-pad" id="idmViz"></div>
+      </div>
+      <div class="vt-chart vt-mc-card" id="idmRangeCard">
+        <div class="vt-card-hd">
+          <h4 class="vc-h">Per-task gain across 5 tasks</h4>
+          <div class="vt-db-leg"><span><i style="background:#b7bcc9"></i>Baselines</span><span><i style="background:var(--vt-idm)"></i>VeriIDM</span></div>
+        </div>
+        <div class="vt-viz-pad" id="idmRangeViz"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -220,11 +299,14 @@
       <span class="vt-eb">Citation</span>
       <h2 id="bibtex-title">BibTeX</h2>
     </header>
-    <!-- TODO(bibtex): final entry -->
-    <div class="vt-bib"><button class="vt-copy" id="copyBib" type="button"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span></button><pre id="bib">@misc{veritouch2027,
-  title     = {VeriTouch: Verified Visuo-Tactile World Models that Improve Robot Policy Learning},
-  author    = {Wang, Shuxun and Jiang, Xiaonan and Wang, Zhaoyu and Chu, Ziyuan and Yue, Xihang and Liu, Pengfei and Zhu, Haodong and Liu, Shiqi and Zheng, Mingzhi and Su, Liang and Zhu, Linchao},
-  year      = {2027}
+    <div class="vt-bib"><button class="vt-copy" id="copyBib" type="button"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span></button><pre id="bib">@misc{wang2026veritouchverifiedvisuotactileworld,
+      title={VeriTouch: Verified Visuo-Tactile World Models that Improve Robot Policy Learning},
+      author={Shuxun Wang and Xiaonan Jiang and Zhaoyu Wang and Ziyuan Chu and Xihang Yue and Pengfei Liu and Haodong Zhu and Shiqi Liu and Mingzhi Zheng and Liang Su and Linchao Zhu},
+      year={2026},
+      eprint={2611.30572},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2611.30572},
 }</pre></div>
   </div>
 </section>
@@ -236,7 +318,7 @@
       <p class="ft-footer-tag">Verified Visuo-Tactile World Models that Improve Robot Policy Learning.</p>
     </div>
     <div class="ft-footer-col"><h4>Page</h4><a href="#top">Home</a><a href="#summary-video">Video</a><a href="#abstract">Abstract</a><a href="#bibtex">BibTeX</a></div>
-    <div class="ft-footer-col"><h4>Method</h4><a href="#pipeline">How it works</a><a href="#results">Results</a><a href="#generated">Generated vs. real</a><a href="#verification">Verification</a><a href="#idm">Action extraction</a></div>
+    <div class="ft-footer-col"><h4>Core Modules</h4><a href="#pipeline">Pipeline Overview</a><a href="#generated">1 · VeriGen</a><a href="#verification">2 · VeriEval</a><a href="#idm">3 · VeriIDM</a><a href="#results">Policy Results</a></div>
   </div>
   <div class="ft-footer-legal">
     <p>Page template based on <a href="https://nerfies.github.io/">Nerfies</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>).</p>
