@@ -336,10 +336,11 @@
 #generated::before,#verification::before,#idm::before{content:"";position:absolute;left:50%;top:0;width:min(240px,42vw);height:3.5px;transform:translateX(-50%);background:var(--c);border-radius:0 0 4px 4px}
 
 /* card headers & segmented controls */
-.vt-mc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:18px;align-items:start}
+.vt-mc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:18px;align-items:stretch}
 .vt-idm-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:18px;align-items:stretch}
 .vt-mc-card{--mc:var(--c,var(--vt-gen));padding:0;overflow:hidden;display:flex;flex-direction:column}
 #mcTacCard,#mcVidCard{--mc:var(--vt-gen)}
+#mcTacViz,#mcVidViz{flex:1;display:flex;flex-direction:column;justify-content:center}
 #vqCard{--mc:var(--vt-gen);padding:0;overflow:hidden;display:flex;flex-direction:column}
 #vqGauges{flex:1;display:flex;flex-direction:column;justify-content:center}
 #idmCard,#idmRangeCard{--mc:var(--vt-idm)}
@@ -386,14 +387,12 @@
 .vt-tok-chip b{display:block;margin-top:2px;font:700 13.5px var(--vt-mono);color:var(--pc)}
 .vt-tok-chip span{display:block;font:500 10px var(--font);color:#8a94a2}
 
-/* 2. VeriGen Video Quality: 2D Bubble Scatter Plot + Vertical Lollipop toggle */
+/* 2. VeriGen Video Quality: 2D Bubble Scatter Plot + Horizontal Bar Chart toggle */
 .vt-scat{display:block;width:100%;height:auto;overflow:visible}
 .vt-scat .sg{stroke:rgba(24,33,47,.08);stroke-dasharray:3 3}
 .vt-scat .sa{stroke:rgba(24,33,47,.22)}
 .vt-scat .sl{font:500 10.5px var(--vt-mono);fill:#8a94a2}
 .vt-scat .st{font:600 10.5px var(--vt-mono);fill:var(--vt-sub);letter-spacing:.03em}
-.vt-scat .sweet{fill:color-mix(in srgb,var(--vt-gen) 7%,transparent);stroke:color-mix(in srgb,var(--vt-gen) 28%,transparent);stroke-dasharray:4 4}
-.vt-scat .sweet-t{font:600 9.5px var(--vt-mono);fill:var(--vt-gen)}
 .vt-scat .bub{cursor:pointer;outline:none}
 .vt-scat .bub circle.dot{stroke:#fff;stroke-width:2.2;transition:transform .2s,filter .2s;transform-box:fill-box;transform-origin:center}
 .vt-scat .bub:hover circle.dot,.vt-scat .bub:focus circle.dot{transform:scale(1.18);filter:drop-shadow(0 6px 12px rgba(24,33,47,.25))}
@@ -401,23 +400,37 @@
 @keyframes vtPulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.85);opacity:0}}
 .vt-scat .blbl{font:600 10.5px var(--font);fill:var(--vt-sub);pointer-events:none}
 .vt-scat .bub.is-ours .blbl{font:800 12px var(--vt-display);fill:var(--vt-gen)}
-.vt-scat-leg{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(24,33,47,.07);font:500 11px var(--vt-mono);color:var(--vt-sub)}
+.vt-scat-leg{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(24,33,47,.07);font:500 11px var(--vt-mono);color:var(--vt-sub)}
+.vt-leg-items{display:inline-flex;flex-wrap:wrap;align-items:center;gap:14px}
 .vt-scat-leg span{display:inline-flex;align-items:center;gap:5px}
 .vt-scat-leg i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.vt-leg-dir{font-style:normal;font-size:10.5px;color:#8a94a2}
 
-/* Vertical Lollipop / Stem chart */
-.vt-lolli{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;align-items:end;height:218px;padding:24px 4px 0}
-.vt-lcol{display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;cursor:pointer;outline:none}
-.vt-lbar-wrap{position:relative;width:100%;flex:1;display:flex;align-items:flex-end;justify-content:center}
-.vt-lstem{position:relative;width:5px;border-radius:99px;background:color-mix(in srgb,var(--lc) 34%,#e6ebf2);transition:height .65s cubic-bezier(.2,.8,.2,1);height:var(--h,0%)}
-.vt-lhead{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;background:var(--lc);border:2.5px solid #fff;box-shadow:0 3px 8px color-mix(in srgb,var(--lc) 50%,transparent);transition:transform .18s}
-.vt-lcol.is-ours .vt-lstem{width:7px;background:linear-gradient(180deg,var(--lc),color-mix(in srgb,var(--lc) 35%,#fff))}
-.vt-lcol.is-ours .vt-lhead{width:19px;height:19px}
-.vt-lcol:hover .vt-lhead,.vt-lcol:focus-visible .vt-lhead{transform:translate(-50%,-50%) scale(1.22)}
-.vt-lval{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);font:600 10.5px var(--vt-mono);color:var(--vt-sub);white-space:nowrap}
-.vt-lcol.is-ours .vt-lval{font-weight:700;font-size:11.5px;color:var(--lc)}
-.vt-lname{margin-top:8px;font:600 10px/1.2 var(--font);color:var(--vt-sub);text-align:center;min-height:26px;display:flex;align-items:flex-start;justify-content:center}
-.vt-lcol.is-ours .vt-lname{color:var(--vt-ink);font-weight:700}
+/* Horizontal Bar Chart for PSNR / LPIPS / IF-G */
+.vt-hbar-wrap{--lbl:104px;--val:52px;--gap:10px;--pad:6px;display:flex;flex-direction:column}
+.vt-hbar-body{position:relative}
+.vt-hbar-grid{position:absolute;top:2px;bottom:2px;left:calc(var(--pad) + var(--lbl) + var(--gap));right:calc(var(--pad) + var(--val) + var(--gap));pointer-events:none}
+.vt-hbar-grid i{position:absolute;top:0;bottom:0;border-left:1px dashed rgba(24,33,47,.09)}
+.vt-hbar-grid i.z{border-left:1px solid rgba(24,33,47,.22)}
+.vt-hbar-rows{position:relative;z-index:1;display:flex;flex-direction:column;gap:4px}
+.vt-hbar-row{display:grid;grid-template-columns:var(--lbl) minmax(0,1fr) var(--val);align-items:center;gap:var(--gap);padding:4px var(--pad);border-radius:8px;cursor:pointer;outline:none;transition:background .16s}
+.vt-hbar-row:hover,.vt-hbar-row:focus-visible{background:rgba(24,33,47,.035)}
+.vt-hbar-row.is-ours{background:color-mix(in srgb,var(--vt-gen) 7%,transparent)}
+.vt-hbar-row.is-ours:hover,.vt-hbar-row.is-ours:focus-visible{background:color-mix(in srgb,var(--vt-gen) 12%,transparent)}
+.vt-hbar-lbl{font:600 12px/1.2 var(--font);color:var(--vt-sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vt-hbar-row.is-ours .vt-hbar-lbl{font:700 12.5px/1.2 var(--vt-display);color:var(--vt-ink)}
+.vt-hbar-trk{position:relative;height:15px;border-radius:0 6px 6px 0;background:rgba(24,33,47,.045);overflow:hidden}
+.vt-hbar-fill{display:block;height:100%;border-radius:0 6px 6px 0;background:var(--bc);transform-origin:left center;animation:vtHbarGrow .52s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 28ms);transition:filter .16s}
+.vt-hbar-row.is-ours .vt-hbar-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--vt-gen) 62%,#fff),var(--vt-gen));box-shadow:0 4px 10px -4px rgba(90,127,163,.65)}
+.vt-hbar-row:hover .vt-hbar-fill{filter:brightness(.94)}
+@keyframes vtHbarGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.vt-hbar-val{text-align:right;font:600 11.5px var(--vt-mono);color:var(--vt-sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+.vt-hbar-row.is-ours .vt-hbar-val{font-weight:700;font-size:12px;color:var(--vt-gen)}
+.vt-hbar-axis{display:grid;grid-template-columns:var(--lbl) minmax(0,1fr) var(--val);gap:var(--gap);padding:5px var(--pad) 0}
+.vt-hbar-ticks{position:relative;height:14px}
+.vt-hbar-ticks span{position:absolute;top:0;transform:translateX(-50%);font:500 10px var(--vt-mono);color:#919ba8;white-space:nowrap}
+.vt-hbar-ticks span:first-child{transform:translateX(0)}
+.vt-hbar-ticks span:last-child{transform:translateX(-100%)}
 
 /* 3. VeriEval Stage 1: Dual Semi-Circle Arc Gauges + Interactive VLM Mini-Columns */
 .vt-vq-gauges{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -574,8 +587,8 @@
   .vt-vq-gauges,.vt-tq-rings{grid-template-columns:1fr}
 }
 @media (max-width:560px){
-  .vt-lolli{grid-template-columns:repeat(4,minmax(0,1fr));height:auto;row-gap:22px}
-  .vt-lbar-wrap{height:120px}
+  .vt-hbar-wrap{--lbl:86px;--val:46px;--gap:8px;--pad:2px}
+  .vt-hbar-lbl{font-size:11px}
   .vt-dims{max-width:310px}.vt-dim{width:64px}.vt-dim-b{width:34px;height:34px;font-size:10.5px}.vt-dim span.vt-dim-l{font-size:9px}
   .vt-dims-core p{display:none}
 }

@@ -54,7 +54,7 @@ python3 -m http.server 8000        # then open http://localhost:8000
 |---|---|
 | `index.html` | Page layout: hero & demo film, abstract, interactive pipeline, policy results & real-world rollouts, **VeriGen**, **VeriEval**, **VeriIDM**, and BibTeX |
 | `hero.css`, `hero.js`, `hero-data.js` | Title block, film, and interactive 4-stage pipeline animation with floating tactile zoom loupe and 4-policy side-by-side switcher |
-| `page.css`, `main.js` | Interactive charts (policy bars, scaling curve, 5-task & 3-axis radars, 2D bubble scatter / lollipop, 7-D VLM ring, semi-circle gauges, donut rings, VeriIDM columns & 5-task dumbbell plot), 4-view drag-to-compare player, and 9-model comparison grid |
+| `page.css`, `main.js` | Interactive charts (policy bars, scaling curve, 5-task & 3-axis radars, 2D bubble scatter / horizontal bars, 7-D VLM ring, semi-circle gauges, donut rings, VeriIDM columns & 5-task dumbbell plot), 4-view drag-to-compare player, and 9-model comparison grid |
 | `style.css` | Base layout of the navbar, lightbox, and footer |
 | `assets/` | Demo film, real-robot policy rollout comparisons, VeriGen vs. GT views, 9-model world-model comparison clips, VeriEval visual rejection example, and share-preview image (`fig/og.jpg`) |
 | `_build/` | Media transcoding scripts |

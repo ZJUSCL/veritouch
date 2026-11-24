@@ -208,8 +208,6 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
       <text class="sl" x="${X(v).toFixed(1)}" y="${H - B + 14}" text-anchor="middle">${v}</text>`).join('');
     const gridY = [0, 25, 50, 75, 100].map((v) => `<line class="${v ? 'sg' : 'sa'}" x1="${L}" x2="${W - R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/>
       <text class="sl" x="${L - 7}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${v}</text>`).join('');
-    const sweet = `<rect class="sweet" x="${X(20.1).toFixed(1)}" y="${Y(107).toFixed(1)}" width="${(X(22.5) - X(20.1)).toFixed(1)}" height="${(Y(76) - Y(107)).toFixed(1)}" rx="10"/>
-      <text class="sweet-t" x="${X(21.3).toFixed(1)}" y="${(Y(79) + 12).toFixed(1)}" text-anchor="middle">sweet spot</text>`;
     const OFF = { 'VeriGen': [-14, 18, 'end'], '𝒩0-TWAM': [-12, 16, 'end'], 'Cosmos-Super': [0, -14, 'middle'], 'Cosmos-Nano': [-12, 14, 'end'],
       'WoW-1': [12, 4, 'start'], 'Dream-Tac': [0, -12, 'middle'], 'MiniMax-H3': [11, 4, 'start'], 'Wan2.2-A14B': [10, 4, 'start'] };
     const bubs = T3.map((r) => {
@@ -223,32 +221,50 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
         <text class="blbl" x="${(px + dx).toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="${anc}">${plain(name)}</text></g>`;
     }).join('');
     vidViz.innerHTML = `<svg class="vt-scat" viewBox="0 0 ${W} ${H}" role="img" aria-label="2D scatter plot of video PSNR vs instruction following IF-G across 8 world models">
-      ${gridX}${gridY}${sweet}${bubs}
+      ${gridX}${gridY}${bubs}
       <text class="st" x="${((L + W - R) / 2).toFixed(1)}" y="${H - 2}" text-anchor="middle">Video quality (PSNR ↑)</text>
       <text class="st" x="12" y="${((T + H - B) / 2).toFixed(1)}" text-anchor="middle" transform="rotate(-90 12 ${((T + H - B) / 2).toFixed(1)})">IF-G (% ↑)</text>
     </svg><div class="vt-scat-leg">
-      <span><i style="background:#5a7fa3"></i>VeriGen</span><span><i style="background:#429488"></i>Touch WM</span><span><i style="background:#9ba5b4"></i>Video-only</span>
+      <div class="vt-leg-items"><span><i style="background:#5a7fa3"></i>VeriGen</span><span><i style="background:#429488"></i>Touch WM</span><span><i style="background:#9ba5b4"></i>Video-only</span></div>
     </div>`;
     bindTips(vidViz);
   };
-  const VCOL = { psnr: [2, 23, 2, false], lpips: [4, 0.65, 2, true], ifg: [6, 108, 1, false] };
-  const drawLolli = (m) => {
-    const [col, max, dec, inv] = VCOL[m];
-    const rows = T3.map((r) => ({ n: r[0], v: r[col], ours: r[0] === 'VeriGen', tac: !!r[1] }))
-      .sort((a, b) => (inv ? a.v - b.v : b.v - a.v));
-    vidViz.innerHTML = `<div class="vt-lolli">${rows.map((r) => {
-      const h = Math.max(8, (inv ? (1 - r.v / max) : (r.v / max)) * 100);
-      const lc = r.ours ? '#5a7fa3' : r.tac ? '#429488' : '#9ba5b4';
-      return `<div class="vt-lcol${r.ours ? ' is-ours' : ''}" tabindex="0" style="--lc:${lc}"
-          data-tip="<b>${plain(r.n)}</b> (${r.tac ? 'touch' : 'video only'})<br>${m.toUpperCase()}: ${r.v.toFixed(dec)}">
-        <div class="vt-lbar-wrap"><div class="vt-lstem" style="--h:${h.toFixed(1)}%"><span class="vt-lhead"></span><span class="vt-lval">${r.v.toFixed(dec)}</span></div></div>
-        <span class="vt-lname">${r.n}</span></div>`;
-    }).join('')}</div>`;
+  const VCOL = {
+    psnr:  { col: 2, max: 24,  dec: 2, inv: false, unit: '',  ticks: [0, 6, 12, 18, 24],   label: 'PSNR',  hint: 'Higher is better ↑' },
+    lpips: { col: 4, max: 0.6, dec: 2, inv: true,  unit: '',  ticks: [0, 0.2, 0.4, 0.6],   label: 'LPIPS', hint: 'Lower is better ↓' },
+    ifg:   { col: 6, max: 100, dec: 1, inv: false, unit: '%', ticks: [0, 25, 50, 75, 100], label: 'IF-G',  hint: 'Higher is better ↑' },
+  };
+  const drawBars = (m) => {
+    const { col, max, dec, inv, unit, ticks, label, hint } = VCOL[m];
+    const rows = T3.map((r) => ({ n: r[0], v: r[col], psnr: r[2], ours: r[0] === 'VeriGen', tac: !!r[1] }))
+      .sort((a, b) => (inv ? a.v - b.v : b.v - a.v) || (b.psnr - a.psnr));
+    const gridLines = ticks.map((t) => `<i class="${t ? '' : 'z'}" style="left:${(t / max * 100).toFixed(2)}%"></i>`).join('');
+    const tickLbls = ticks.map((t) => `<span style="left:${(t / max * 100).toFixed(2)}%">${t}${unit}</span>`).join('');
+    vidViz.innerHTML = `<div class="vt-hbar-wrap">
+      <div class="vt-hbar-body">
+        <div class="vt-hbar-grid" aria-hidden="true">${gridLines}</div>
+        <div class="vt-hbar-rows">${rows.map((r, i) => {
+          const w = Math.max(2, Math.min(100, r.v / max * 100));
+          const bc = r.ours ? '#5a7fa3' : r.tac ? '#429488' : '#aeb7c4';
+          return `<div class="vt-hbar-row${r.ours ? ' is-ours' : ''}" tabindex="0" style="--bc:${bc};--i:${i}"
+              data-tip="<b>${plain(r.n)}</b> (${r.tac ? 'video + touch' : 'video only'})<br>${label}: ${r.v.toFixed(dec)}${unit}">
+            <span class="vt-hbar-lbl">${r.n}</span>
+            <span class="vt-hbar-trk"><i class="vt-hbar-fill" style="width:${w.toFixed(2)}%"></i></span>
+            <span class="vt-hbar-val">${r.v.toFixed(dec)}${unit}</span>
+          </div>`;
+        }).join('')}</div>
+      </div>
+      <div class="vt-hbar-axis"><span></span><div class="vt-hbar-ticks">${tickLbls}</div><span></span></div>
+    </div>
+    <div class="vt-scat-leg">
+      <div class="vt-leg-items"><span><i style="background:#5a7fa3"></i>VeriGen</span><span><i style="background:#429488"></i>Touch WM</span><span><i style="background:#9ba5b4"></i>Video-only</span></div>
+      <em class="vt-leg-dir">${hint}</em>
+    </div>`;
     bindTips(vidViz);
   };
   if (vidViz) {
     drawMap();
-    seg($('#mcVid'), (b) => { if (b.dataset.m === 'map') drawMap(); else drawLolli(b.dataset.m); });
+    seg($('#mcVid'), (b) => { if (b.dataset.m === 'map') drawMap(); else drawBars(b.dataset.m); });
   }
 })();
 
