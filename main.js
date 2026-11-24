@@ -169,7 +169,7 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
       <small>${m.name}</small><b>${m.tok}</b><span>tactile tokens</span></div>`).join('');
     tacViz.innerHTML = `<svg class="vt-rad3" viewBox="0 0 340 228" role="img" aria-label="3-axis touch fidelity radar comparing VeriGen, N0-TWAM, and Dream-Tac">
       ${rings}${spokes}${polys}${dots}${axLbl}</svg><div class="vt-tok-row">${chips}</div>`;
-    tacLeg.innerHTML = T2M.map((m) => `<button type="button" class="vt-rad-pill" data-m="${m.key}" style="--pc:${m.c}"><i></i>${m.name}</button>`).join('');
+    tacLeg.innerHTML = T2M.map((m) => `<button type="button" class="vt-rad-pill" data-m="${m.key}" style="--pc:${m.c}"><i></i><span>${m.name}</span></button>`).join('');
     const focusM = (key) => {
       $$('.poly,.vdot', tacViz).forEach((el) => {
         const hit = key && el.dataset.m === key;
