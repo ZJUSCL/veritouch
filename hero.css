@@ -35,6 +35,7 @@
 .vt-buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1.2rem}
 .vt-btn{display:inline-flex;align-items:center;gap:.5em;height:2.7rem;padding:0 1.1rem;border-radius:999px;border:1px solid rgba(27,32,39,.16);background:#fff;
   color:var(--vt-ink);font-size:.95rem;font-weight:600;cursor:pointer;transition:transform .18s}
+.vt-btn svg{width:1.05em;height:1.05em;flex:none}
 .vt-btn:disabled{cursor:default;color:#8a9099;background:rgba(255,255,255,.6)}
 .vt-btn.is-dark{background:var(--vt-ink);border-color:var(--vt-ink);color:#fff}
 .vt-btn:not(:disabled):hover{transform:translateY(-1px);opacity:1}
