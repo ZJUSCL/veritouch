@@ -143,7 +143,10 @@
     <figure class="vt-chart" id="polChart" aria-labelledby="polChartTitle"></figure>
 
     <h3 class="vt-h3">Scaling synthetic data</h3>
-    <figure class="vt-chart" id="scaleChart"></figure>
+    <div class="vt-charts">
+      <figure class="vt-chart" id="scaleChart"></figure>
+      <figure class="vt-chart" id="radarChart"></figure>
+    </div>
 
     <h3 class="vt-h3">Real-world rollouts</h3>
     <div class="vt-tabs" id="execTabs" role="tablist" aria-label="Task"></div>
@@ -263,22 +266,7 @@
       <h2 id="idm-title">VeriIDM · Action Extraction from Dual-View Video</h2>
     </header>
 
-    <div class="vt-idm-grid">
-      <div class="vt-chart vt-mc-card" id="idmCard">
-        <div class="vt-card-hd">
-          <h4 class="vc-h">Real-robot replay success (%)</h4>
-          <div class="vt-seg" id="idmTask"></div>
-        </div>
-        <div class="vt-viz-pad" id="idmViz"></div>
-      </div>
-      <div class="vt-chart vt-mc-card" id="idmRangeCard">
-        <div class="vt-card-hd">
-          <h4 class="vc-h">Per-task gain across 5 tasks</h4>
-          <div class="vt-db-leg"><span><i style="background:#b7bcc9"></i>Baselines</span><span><i style="background:var(--vt-idm)"></i>VeriIDM</span></div>
-        </div>
-        <div class="vt-viz-pad" id="idmRangeViz"></div>
-      </div>
-    </div>
+    <figure class="vt-chart" id="idmCard"></figure>
   </div>
 </section>
 
