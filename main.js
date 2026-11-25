@@ -382,7 +382,7 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
   }
 })();
 
-/* ------------------------------------------------ 3 · VeriIDM: Horizontal Grouped Bar Chart (5 Tasks + Avg, Table 4) */
+/* ------------------------------------------------ 3 · VeriIDM: Vertical Grouped Bar Chart (5 Tasks + Avg in one row, Table 4) */
 (() => {
   const el = $('#idmCard');
   if (!el) return;
@@ -396,28 +396,23 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
     ...TASK5.map((name, k) => ({ name, vals: T4.map(([, arr]) => arr[k]), avg: false })),
     { name: 'Avg', vals: T4.map(([, , avg]) => avg), avg: true },
   ];
+  const MAX = 115, y = (v) => (v / MAX * 100).toFixed(2) + '%';
   const legend = `<div class="vc-legend">${T4.map(([n, , , c]) => `<span><i class="s ${c}"></i>${n}</span>`).join('')}</div>`;
-  const grid = [0, 25, 50, 75, 100].map((v) => `<span style="left:${v}%"></span>`).join('');
-  const axis = [0, 25, 50, 75, 100].map((v) => `<span style="left:${v}%">${v}%</span>`).join('');
   el.innerHTML = `<div class="vc-head"><h4 class="vc-h">Real-robot replay success (%)</h4>${legend}</div>
-    <div class="vidm-wrap">
-      <div class="vidm-rows">${GROUPS.map((g, i) => {
+    <div class="vb-plot vb-idm">
+      <div class="vb-y" aria-hidden="true">${[0, 25, 50, 75, 100].map((v) => `<span style="bottom:${y(v)}"><em>${v}</em></span>`).join('')}</div>
+      <div class="vb-groups">${GROUPS.map((g, i) => {
         const dec = g.avg ? 1 : 0;
         const bestBase = Math.max(...g.vals.slice(0, 3)), gain = g.vals[3] - bestBase;
         const tip = `<b>${g.name}</b><br>` + T4.map(([n], j) => `${n}: ${g.vals[j].toFixed(dec)}%`).join('<br>');
-        return `<div class="vidm-row${g.avg ? ' is-avg' : ''}" tabindex="0" style="--i:${i}" data-tip="${tip}">
-          <span class="vidm-lbl">${g.name}</span>
-          <div class="vidm-tracks">
-            <div class="vidm-grid" aria-hidden="true">${grid}</div>
-            ${g.vals.map((v, j) => {
-              const c = T4[j][3];
-              const badge = j === 3 && gain > 0 ? `<b class="vidm-gain">+${gain.toFixed(dec)} pp</b>` : '';
-              return `<div class="vidm-bar-row"><i class="${c}" style="width:${v.toFixed(1)}%;--j:${j}"></i><em class="${c}">${v.toFixed(dec)}%</em>${badge}</div>`;
-            }).join('')}
-          </div>
-        </div>`;
+        return `<div class="vb-g${g.avg ? ' is-avg' : ''}" tabindex="0" style="--i:${i}" data-tip="${tip}">
+          <div class="vb-bars">${g.vals.map((v, j) => {
+            const c = T4[j][3];
+            const badge = j === 3 && gain > 0 ? `<b class="vb-gain">+${gain.toFixed(dec)}<small>pp</small></b>` : '';
+            return `<i class="${c}" style="height:${y(v)};--j:${j}"><em>${v.toFixed(dec)}</em>${badge}</i>`;
+          }).join('')}</div>
+          <div class="vb-name"><b>${g.name}</b></div></div>`;
       }).join('')}</div>
-      <div class="vidm-axis" aria-hidden="true"><span></span><div class="vidm-ticks">${axis}</div></div>
     </div>
     <p class="vc-foot">Mean replay success across 5 tasks: <b class="m0">70.0%</b> (TACO*) · <b class="m1">74.0%</b> (DreamGen) · <b class="m2">84.0%</b> (EVA) → <b class="m3">94.0%</b> (VeriIDM)</p>
     ${srTable(['Task', ...T4.map(([n]) => n + ' (%)')], GROUPS.map((g) => [g.name, ...g.vals]))}`;

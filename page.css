@@ -62,34 +62,23 @@
 .vc-foot{margin:0;padding-top:14px;border-top:1px solid rgba(30,39,51,.06);font-size:13.5px;color:var(--vt-sub)}
 .vc-foot b{font-family:var(--vt-mono);font-weight:600}
 .vc-foot b.base{color:var(--vt-base-ink)}.vc-foot b.raw{color:var(--vt-raw)}.vc-foot b.ours{color:var(--vt-pol)}
-.vc-legend i.s.m0,.vidm-bar-row i.m0{background:#c9ced8}
-.vc-legend i.s.m1,.vidm-bar-row i.m1{background:#a5aebc}
-.vc-legend i.s.m2,.vidm-bar-row i.m2{background:color-mix(in srgb,var(--vt-gen) 72%,#e6ebf2)}
-.vc-legend i.s.m3,.vidm-bar-row i.m3{background:linear-gradient(90deg,color-mix(in srgb,var(--vt-idm) 74%,#fff),var(--vt-idm) 70%)}
+.vc-legend i.s.m0,.vb-idm .vb-bars i.m0{background:#c9ced8}
+.vc-legend i.s.m1,.vb-idm .vb-bars i.m1{background:#a5aebc}
+.vc-legend i.s.m2,.vb-idm .vb-bars i.m2{background:color-mix(in srgb,var(--vt-gen) 72%,#e6ebf2)}
+.vc-legend i.s.m3,.vb-idm .vb-bars i.m3{background:linear-gradient(180deg,color-mix(in srgb,var(--vt-idm) 74%,#fff),var(--vt-idm) 62%)}
+.vb-idm .vb-bars i.m3{box-shadow:0 12px 22px -12px rgba(201,122,74,.65)}
 .vc-foot b.m0{color:#7c8491}.vc-foot b.m1{color:#5e6776}.vc-foot b.m2{color:var(--vt-gen)}.vc-foot b.m3{color:var(--vt-idm)}
-.vidm-wrap{margin:14px 0 18px}
-.vidm-rows{display:flex;flex-direction:column;gap:10px}
-.vidm-row{display:grid;grid-template-columns:68px minmax(0,1fr);align-items:center;gap:14px;padding:7px 10px 7px 6px;border-radius:10px;outline:none;transition:background .16s}
-.vidm-row:hover,.vidm-row:focus-visible{background:rgba(201,122,74,.06)}
-.vidm-row.is-avg{margin-top:4px;padding-top:12px;border-top:1.5px dashed rgba(30,39,51,.14);background:rgba(201,122,74,.045)}
-.vidm-lbl{font:700 14.5px var(--vt-display);color:var(--vt-ink);text-align:right;white-space:nowrap}
-.vidm-row.is-avg .vidm-lbl{color:var(--vt-idm)}
-.vidm-tracks{position:relative;display:flex;flex-direction:column;gap:4px;padding-right:108px}
-.vidm-grid{position:absolute;top:-4px;bottom:-4px;left:0;right:108px;pointer-events:none}
-.vidm-grid span{position:absolute;top:0;bottom:0;width:1px;background:rgba(30,39,51,.07)}
-.vidm-grid span:first-child{background:rgba(30,39,51,.18)}
-.vidm-bar-row{position:relative;display:flex;align-items:center;gap:7px;height:13px}
-.vidm-bar-row i{display:block;height:10px;border-radius:0 5px 5px 0;transform-origin:0 50%;flex:none}
-.vidm-bar-row i.m3{height:12px;box-shadow:0 4px 10px -4px rgba(201,122,74,.55)}
-.vidm-bar-row em{font:500 11px var(--vt-mono);font-style:normal;color:var(--vt-sub);white-space:nowrap}
-.vidm-bar-row em.m3{font-weight:700;font-size:12px;color:var(--vt-ink)}
-.vidm-gain{padding:1px 7px;border-radius:999px;background:var(--vt-peach);color:var(--vt-peach-ink);border:1px solid rgba(201,122,74,.28);font:700 10.5px var(--vt-mono);white-space:nowrap}
-.vidm-axis{display:grid;grid-template-columns:68px minmax(0,1fr);gap:14px;padding:6px 10px 0 6px}
-.vidm-ticks{position:relative;height:16px;margin-right:108px}
-.vidm-ticks span{position:absolute;top:0;transform:translateX(-50%);font:500 10.5px var(--vt-mono);color:#9aa0a7}
-.vidm-ticks span:first-child{transform:none}
-.vt-chart.is-anim .vidm-bar-row i{transform:scaleX(0);transition:transform .85s cubic-bezier(.2,.8,.2,1) calc(var(--i,0)*.08s + var(--j,0)*.06s)}
-.vt-chart.is-in .vidm-bar-row i{transform:scaleX(1)}
+.vb-idm{margin:28px 0 64px 34px}
+.vb-idm .vb-groups{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.vb-idm .vb-bars{gap:4px}
+.vb-idm .vb-bars i{width:clamp(10px,1.75vw,22px);border-radius:6px 6px 2px 2px}
+.vb-idm .vb-bars em{font-size:10px;transform:translate(-50%,-5px)}
+.vb-idm .vb-bars i.m3 em{font-weight:700;font-size:11.5px;color:var(--vt-ink)}
+.vb-idm .vb-gain{padding:2px 7px;font-size:11.5px;transform:translate(-50%,-25px)}
+.vb-idm .vb-name{margin-top:12px}
+.vb-idm .vb-name b{font-size:15.5px}
+.vb-idm .vb-g.is-avg{border-left:1.5px dashed rgba(30,39,51,.15);padding-left:6px}
+.vb-idm .vb-g.is-avg .vb-name b{color:var(--vt-idm)}
 
 /* Fig. 3 panels (same canvas size, matching teaser scaling curve) */
 .vt-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
