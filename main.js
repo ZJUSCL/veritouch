@@ -66,60 +66,32 @@ const plain = (s) => s.replace(/<[^>]+>/g, '');
   bindTips(el);
 })();
 
-// Fig. 3: N0-VTLA data scaling. (a) mean SR per synthetic/real ratio; (b) per-task SR. Per-task values for 0x-2x were read
-// off the vector radar in n0_data_scaling.pdf (4x matches the printed labels, each ring's mean matches (a)).
-const RATIOS = ['0×', '1×', '2×', '4×'], MEAN = [33.0, 52.7, 53.7, 67.0];
+// Fig. 3: N0-VTLA data scaling across 5 tasks + Avg (0x, 1x, 2x, 4x synthetic : real).
+const RATIOS = ['0脳', '1脳', '2脳', '4脳'], MEAN = [33.0, 52.7, 53.7, 67.0];
 const TASK5 = ['Chip', 'Egg', 'Press', 'Car', 'Erase'];
 const PER = [[30.0, 26.7, 16.7, 50.0, 41.7], [46.7, 63.3, 33.3, 73.3, 46.7], [43.3, 66.7, 36.7, 73.3, 48.3], [60.0, 83.3, 56.7, 83.3, 51.7]];
-const VW = 520, VH = 330;                      // both Fig. 3 panels share one canvas, so the two cards match exactly
 const head = (h, legend = '') => `<div class="vc-head"><h4 class="vc-h">${h}</h4>${legend}</div>`;
 (() => {
-  const el = $('#scaleChart'), L = 44, R = 28, T = 34, B = 44, max = 80;
-  const X = (i) => L + 30 + i * (VW - L - R - 60) / 3, Y = (v) => T + (VH - T - B) * (1 - v / max);
-  const grid = [0, 20, 40, 60, 80].map((v) => `<line class="g${v ? '' : ' z'}" x1="${L}" x2="${VW - R}" y1="${Y(v)}" y2="${Y(v)}"/>
-    <text class="ax" x="${L - 10}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`).join('');
-  const pts = MEAN.map((v, i) => [X(i), Y(v)]);
-  const line = pts.map(([px, py], i) => `${i ? 'L' : 'M'}${px.toFixed(1)},${py.toFixed(1)}`).join(' ');
-  const area = `${line} L${pts[3][0].toFixed(1)},${Y(0)} L${pts[0][0].toFixed(1)},${Y(0)} Z`;
-  const marks = MEAN.map((v, i) => `<g class="pt${i ? '' : ' base'}${i === 3 ? ' end' : ''}" tabindex="0" style="--i:${i}"
-      data-tip="<b>${i ? RATIOS[i] + ' synthetic : real' : 'Real data only'}</b><br>${v.toFixed(1)}% mean success">
-      <rect class="hit" x="${X(i) - 36}" y="${T}" width="72" height="${VH - T - B}"/>
-      <circle cx="${X(i)}" cy="${Y(v)}" r="${i === 3 ? 7 : 5.5}"/>
-      <text class="lbl" x="${X(i)}" y="${Y(v) - (i === 3 ? 16 : 13)}" text-anchor="middle">${v.toFixed(1)}${i === 3 ? '%' : ''}</text>
-      <text class="ax xl" x="${X(i)}" y="${VH - B + 22}" text-anchor="middle">${i ? RATIOS[i] : 'real only'}</text></g>`).join('');
-  el.innerHTML = head('Success doubles as verified data grows',
-      `<div class="vc-legend"><span><i class="m base"></i>Real only</span><span><i class="b"></i>+ VeriTouch</span></div>`) +
-    `<svg class="vc-svg" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Mean success rate rises from 33.0% with real data only to 67.0% with four times as much verified synthetic data as real data">
-      <defs><linearGradient id="vcArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7869b8" stop-opacity=".24"/><stop offset="1" stop-color="#7869b8" stop-opacity="0"/></linearGradient></defs>
-      ${grid}
-      <line class="ref" x1="${L}" x2="${VW - R}" y1="${Y(33)}" y2="${Y(33)}"/><text class="ref-t" x="${VW - R}" y="${Y(33) + 15}" text-anchor="end">real only · 33.0</text>
-      <rect x="${(X(3) - 38).toFixed(1)}" y="${(T - 26).toFixed(1)}" width="76" height="21" rx="10.5" fill="#fcece3" stroke="rgba(201,122,74,.28)"/>
-      <text x="${X(3).toFixed(1)}" y="${(T - 11.5).toFixed(1)}" text-anchor="middle" style="font:700 11.5px var(--vt-mono);fill:#bf6436">+34.0 pp</text>
-      <path class="area" d="${area}"/><path class="ln" d="${line}" pathLength="1"/>${marks}
-      <text class="ax at" x="${(L + VW - R) / 2}" y="${VH - 4}" text-anchor="middle">synthetic : real data</text></svg>
-    ${srTable(['Synthetic / real', 'Mean success (%)'], MEAN.map((v, i) => [RATIOS[i], v]))}`;
-  bindTips(el);
-})();
-(() => {
-  const el = $('#radarChart'), cx = VW / 2, cy = 168, R = 124;
-  const ang = (k) => -Math.PI / 2 + k * 2 * Math.PI / 5, P = (k, v) => [cx + Math.cos(ang(k)) * R * v / 100, cy + Math.sin(ang(k)) * R * v / 100];
-  const poly = (vals) => vals.map((v, k) => P(k, v).map((q) => q.toFixed(1)).join(',')).join(' ');
-  const rings = [25, 50, 75, 100].map((v) => `<polygon class="ring" points="${poly(Array(5).fill(v))}"/>`).join('') +
-    [50, 100].map((v) => `<text class="ax rv" x="${cx + 4}" y="${cy - R * v / 100 + 11}">${v}</text>`).join('');
-  const spokes = TASK5.map((_, k) => { const [px, py] = P(k, 100); return `<line class="spoke" x1="${cx}" y1="${cy}" x2="${px}" y2="${py}"/>`; }).join('');
-  const SER = [[0, 'base', 'Real data only'], [3, 'ours', 'VeriTouch, 4× synthetic']];
-  const shapes = SER.map(([r, cl]) => `<polygon class="ser ${cl}" points="${poly(PER[r])}"/>`).join('');
-  // values only on hover: each vertex is its own target
-  const points = SER.map(([r, cl, name]) => PER[r].map((v, k) => { const [px, py] = P(k, v);
-    return `<g class="vx ${cl}" tabindex="0" data-tip="<b>${TASK5[k]}</b><br>${name}: ${v.toFixed(1)}%"><circle class="hit" cx="${px}" cy="${py}" r="13"/><circle class="dot" cx="${px}" cy="${py}" r="${cl === 'ours' ? 5 : 4}"/></g>`; }).join('')).join('');
-  const labels = TASK5.map((t, k) => { const [px, py] = P(k, 118), anchor = Math.abs(px - cx) < 5 ? 'middle' : px > cx ? 'start' : 'end';
-    return `<text class="tn" x="${px}" y="${py + (k === 0 ? -6 : k > 1 && k < 4 ? 16 : 5)}" text-anchor="${anchor}">${t}</text>`; }).join('');
-  el.innerHTML = head('Gains on all five tasks',
-      `<div class="vc-legend"><span><i class="m base"></i>Real only</span><span><i class="b"></i>VeriTouch (4×)</span></div>`) +
-    `<svg class="vc-svg vc-radar" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Per-task success rate with real data only and with four times as much verified synthetic data">
-      <defs><radialGradient id="vcRad" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7869b8" stop-opacity=".08"/><stop offset="1" stop-color="#7869b8" stop-opacity=".30"/></radialGradient></defs>
-      <g class="web">${rings}${spokes}</g>${labels}<g class="grow" style="transform-origin:${cx}px ${cy}px">${shapes}${points}</g></svg>
-    ${srTable(['Task', ...RATIOS.map((r) => r + ' (%)')], TASK5.map((t, k) => [t, ...PER.map((row) => row[k])]))}`;
+  const el = $('#scaleChart'), MAX = 100, y = (v) => (v / MAX * 100).toFixed(2) + '%';
+  const GROUPS = [
+    ...TASK5.map((name, k) => ({ name, vals: PER.map((row) => row[k]), avg: false })),
+    { name: 'Avg', vals: MEAN, avg: true },
+  ];
+  const CLS = ['s0', 's1', 's2', 's4'];
+  const legend = `<div class="vc-legend"><span><i class="s s0"></i>0脳 (Baseline)</span><span><i class="s s1"></i>1脳</span><span><i class="s s2"></i>2脳</span><span><i class="s s4"></i>4脳</span></div>`;
+  el.innerHTML = head('Success grows across all five tasks as verified data scales', legend) +
+    `<div class="vb-plot vb-scale">
+      <div class="vb-y" aria-hidden="true">${[0, 20, 40, 60, 80, 100].map((v) => `<span style="bottom:${y(v)}"><em>${v}</em></span>`).join('')}</div>
+      <div class="vb-groups">${GROUPS.map((g, i) => {
+        const [v0, v1, v2, v4] = g.vals;
+        const tip = `<b>${g.name}</b><br>0脳 (Baseline) ${v0.toFixed(1)}%<br>1脳 ${v1.toFixed(1)}%<br>2脳 ${v2.toFixed(1)}%<br>4脳 ${v4.toFixed(1)}% (+${(v4 - v0).toFixed(1)} pp)`;
+        return `<div class="vb-g${g.avg ? ' is-avg' : ''}" tabindex="0" style="--i:${i}" data-tip="${tip}">
+          <div class="vb-bars">${g.vals.map((v, j) => `<i class="${CLS[j]}" style="height:${y(v)};--j:${j}"><em>${v.toFixed(1)}</em>${j === 3 ? `<b class="vb-gain">+${(v4 - v0).toFixed(1)}<small>pp</small></b>` : ''}</i>`).join('')}</div>
+          <div class="vb-name"><b>${g.name}</b></div></div>`;
+      }).join('')}</div>
+    </div>
+    <p class="vc-foot">Mean across 5 tasks (${N0}-VTLA): <b class="base">33.0%</b> (0脳) 鈫?<b class="s1">52.7%</b> (1脳) 鈫?<b class="s2">53.7%</b> (2脳) 鈫?<b class="ours">67.0%</b> (4脳)</p>
+    ${srTable(['Task', '0脳 (%)', '1脳 (%)', '2脳 (%)', '4脳 (%)'], GROUPS.map((g) => [g.name, ...g.vals]))}`;
   bindTips(el);
 })();
 
