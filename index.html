@@ -75,7 +75,7 @@
 <!-- ============================================================ PIPELINE -->
 <section class="vt-flow-sec" id="pipeline" aria-labelledby="pipeline-title">
   <header class="vt-sh" style="--c:var(--vt-eval)">
-    <h2 id="pipeline-title">VeriTouch Pipeline</h2>
+    <h2 id="pipeline-title">Method Overview</h2>
   </header>
   <!-- One batch through the pipeline: VeriGen -> VeriEval (four checks, dropped at the first failure) -> VeriIDM -> policy.
        Six real rollouts with their real verdicts (hero-data.js); driven by hero.js. -->
@@ -138,11 +138,11 @@
 <section class="vt-sec is-white" id="results" aria-labelledby="results-title">
   <div class="vt-wrap">
     <header class="vt-sh" style="--c:var(--vt-pol)">
-      <h2 id="results-title">Real-Robot Policy Results</h2>
+      <h2 id="results-title">Policy Evaluation</h2>
     </header>
     <figure class="vt-chart" id="polChart" aria-labelledby="polChartTitle"></figure>
 
-    <h3 class="vt-h3">Scaling synthetic data</h3>
+    <h3 class="vt-h3">Synthetic Data Scaling</h3>
     <div class="vt-charts">
       <figure class="vt-chart" id="scaleChart"></figure>
       <figure class="vt-chart" id="radarChart"></figure>
@@ -168,18 +168,18 @@
         <input type="range" min="0" max="16" step="0.01" value="0" aria-label="Time"><output>0.0 / 0.0 s</output></div>
     </div>
 
-    <h3 class="vt-h3">VeriGen vs. World Model Baselines</h3>
+    <h3 class="vt-h3">Quantitative Comparison</h3>
     <div class="vt-mc-grid">
       <div class="vt-chart vt-mc-card" id="mcTacCard">
         <div class="vt-card-hd">
-          <h4 class="vc-h">Touch fidelity</h4>
+          <h4 class="vc-h">Tactile Fidelity</h4>
           <div class="vt-tac-leg" id="mcTacLeg"></div>
         </div>
         <div class="vt-viz-pad" id="mcTacViz"></div>
       </div>
       <div class="vt-chart vt-mc-card" id="mcVidCard">
         <div class="vt-card-hd">
-          <h4 class="vc-h">Video fidelity</h4>
+          <h4 class="vc-h">Visual Fidelity</h4>
           <div class="vt-seg" id="mcVid"><button type="button" class="is-active" data-m="map">2D Map</button><button type="button" data-m="psnr">PSNR ↑</button><button type="button" data-m="lpips">LPIPS ↓</button><button type="button" data-m="ifg">IF-G ↑</button></div>
         </div>
         <div class="vt-viz-pad" id="mcVidViz"></div>
@@ -251,7 +251,7 @@
       </div>
     </div>
 
-    <h3 class="vt-h3">Ablation · VeriEval Filtering &amp; Synthetic Touch</h3>
+    <h3 class="vt-h3">Ablation Study</h3>
     <div class="vt-charts">
       <figure class="vt-chart" id="filterChart"></figure>
       <figure class="vt-chart" id="touchChart"></figure>
@@ -304,7 +304,7 @@
 </footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true"><img alt=""></div>
-<script src="main.js?v=20261125c"></script>
+<script src="main.js?v=20261125d"></script>
 <script src="hero-data.js"></script>
 <script src="hero.js?v=20261125"></script>
 </body>

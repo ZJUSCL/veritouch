@@ -59,7 +59,7 @@ const plain = (s) => s.replace(/<[^>]+>/g, '');
         <div class="vb-bars">
           <i class="base" style="height:${y(a)};--j:0"><em>${a.toFixed(1)}</em></i><i class="raw" style="height:${y(m)};--j:1"><em>${m.toFixed(1)}</em></i><i class="ours" style="height:${y(b)};--j:2"><em>${b.toFixed(1)}</em><b class="vb-gain">+${(b - a).toFixed(1)}<small>pp</small></b></i>
         </div>
-        <div class="vb-name"><b>${p}</b><small>${tac ? 'vision + touch' : 'vision only'}</small></div></div>`).join('')}</div>
+        <div class="vb-name"><b>${p}</b><small>${tac ? 'Visuo-Tactile' : 'Visuomotor'}</small></div></div>`).join('')}</div>
     </div>
     <p class="vc-foot">Mean across 4 policies: <b class="base">19.4%</b> → <b class="raw">22.9%</b> → <b class="ours">33.8%</b></p>
     ${srTable(['Policy', 'Baseline (%)', 'VeriTouch w/o VeriEval (%)', 'VeriTouch (%)'], POL.map(([p, , a, m, b]) => [plain(p), a, m, b]))}`;
@@ -87,7 +87,7 @@ const head = (h, legend = '') => `<div class="vc-head"><h4 class="vc-h">${h}</h4
       <circle cx="${X(i)}" cy="${Y(v)}" r="${i === 3 ? 7 : 5.5}"/>
       <text class="lbl" x="${X(i)}" y="${Y(v) - (i === 3 ? 16 : 13)}" text-anchor="middle">${v.toFixed(1)}${i === 3 ? '%' : ''}</text>
       <text class="ax xl" x="${X(i)}" y="${VH - B + 22}" text-anchor="middle">${i ? RATIOS[i] : 'real only'}</text></g>`).join('');
-  el.innerHTML = head('Success doubles as verified data grows',
+  el.innerHTML = head('Data Scaling Across Tasks',
       `<div class="vc-legend"><span><i class="m base"></i>Real only</span><span><i class="b"></i>+ VeriTouch</span></div>`) +
     `<svg class="vc-svg" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Mean success rate rises from 33.0% with real data only to 67.0% with four times as much verified synthetic data as real data">
       <defs><linearGradient id="vcArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7869b8" stop-opacity=".24"/><stop offset="1" stop-color="#7869b8" stop-opacity="0"/></linearGradient></defs>
@@ -398,7 +398,7 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
   ];
   const MAX = 115, y = (v) => (v / MAX * 100).toFixed(2) + '%';
   const legend = `<div class="vc-legend">${T4.map(([n, , , c]) => `<span><i class="s ${c}"></i>${n}</span>`).join('')}</div>`;
-  el.innerHTML = `<div class="vc-head"><h4 class="vc-h">Real-robot replay success (%)</h4>${legend}</div>
+  el.innerHTML = `<div class="vc-head"><h4 class="vc-h">Action Replay Success Rate (%)</h4>${legend}</div>
     <div class="vb-plot vb-idm">
       <div class="vb-y" aria-hidden="true">${[0, 25, 50, 75, 100].map((v) => `<span style="bottom:${y(v)}"><em>${v}</em></span>`).join('')}</div>
       <div class="vb-groups">${GROUPS.map((g, i) => {
@@ -414,7 +414,6 @@ const fillTable = (el, headCols, rows, { ours = -1, best = [], left = 1, sep = [
           <div class="vb-name"><b>${g.name}</b></div></div>`;
       }).join('')}</div>
     </div>
-    <p class="vc-foot">Mean replay success across 5 tasks: <b class="m0">70.0%</b> (TACO*) · <b class="m1">74.0%</b> (DreamGen) · <b class="m2">84.0%</b> (EVA) → <b class="m3">94.0%</b> (VeriIDM)</p>
     ${srTable(['Task', ...T4.map(([n]) => n + ' (%)')], GROUPS.map((g) => [g.name, ...g.vals]))}`;
   bindTips(el);
 })();
@@ -429,9 +428,9 @@ function hbars(el, title, rows, gainFrom) {
     ${srTable(['Setting', 'Mean success (%)'], rows.map(([n, v]) => [n, v]))}`;
   bindTips(el);
 }
-hbars($('#filterChart'), 'VeriEval filtering ablation',
+hbars($('#filterChart'), 'Verification Filtering',
   [['All, unfiltered', 33.3], ['Visual checks only', 43.3], ['VeriEval (visual + touch)', 51.7, true]], 43.3);
-hbars($('#touchChart'), 'Synthetic touch ablation',
+hbars($('#touchChart'), 'Synthetic Tactile Signal',
   [['No-contact touch', 26.0], ['VeriGen touch', 51.7, true]], 26.0);
 
 // charts animate in once, when they first scroll into view
