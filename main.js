@@ -50,19 +50,19 @@ const POL = [['ACT', false, 6.7, 9.3, 18.3], ['<span class="vt-pi">π</span><sub
 const plain = (s) => s.replace(/<[^>]+>/g, '');
 (() => {
   const el = $('#polChart'), MAX = 70, y = (v) => (v / MAX * 100).toFixed(2) + '%';
-  const legend = `<div class="vc-legend"><span><i class="s base"></i>Real data only</span><span><i class="s raw"></i>+ unfiltered synthetic</span><span><i class="s ours"></i>+ VeriTouch data</span></div>`;
+  const legend = `<div class="vc-legend"><span><i class="s base"></i>Baseline</span><span><i class="s raw"></i>VeriTouch w/o VeriEval</span><span><i class="s ours"></i>VeriTouch</span></div>`;
   el.innerHTML = `<div class="vc-head"><h4 class="vc-h">Every policy improves with VeriTouch</h4>${legend}</div>
     <div class="vb-plot">
       <div class="vb-y" aria-hidden="true">${[0, 20, 40, 60].map((v) => `<span style="bottom:${y(v)}"><em>${v}</em></span>`).join('')}</div>
       <div class="vb-groups">${POL.map(([p, tac, a, m, b], i) => `<div class="vb-g" tabindex="0" style="--i:${i}"
-          data-tip="<b>${plain(p)}</b><br>Real data only ${a.toFixed(1)}%<br>+ unfiltered synthetic ${m.toFixed(1)}%<br>+ VeriTouch ${b.toFixed(1)}%">
+          data-tip="<b>${plain(p)}</b><br>Baseline ${a.toFixed(1)}%<br>VeriTouch w/o VeriEval ${m.toFixed(1)}%<br>VeriTouch ${b.toFixed(1)}%">
         <div class="vb-bars">
           <i class="base" style="height:${y(a)};--j:0"><em>${a.toFixed(1)}</em></i><i class="raw" style="height:${y(m)};--j:1"><em>${m.toFixed(1)}</em></i><i class="ours" style="height:${y(b)};--j:2"><em>${b.toFixed(1)}</em><b class="vb-gain">+${(b - a).toFixed(1)}<small>pp</small></b></i>
         </div>
         <div class="vb-name"><b>${p}</b><small>${tac ? 'vision + touch' : 'vision only'}</small></div></div>`).join('')}</div>
     </div>
     <p class="vc-foot">Mean across 4 policies: <b class="base">19.4%</b> → <b class="raw">22.9%</b> → <b class="ours">33.8%</b></p>
-    ${srTable(['Policy', 'Real data only (%)', '+ unfiltered synthetic (%)', '+ VeriTouch (%)'], POL.map(([p, , a, m, b]) => [plain(p), a, m, b]))}`;
+    ${srTable(['Policy', 'Baseline (%)', 'VeriTouch w/o VeriEval (%)', 'VeriTouch (%)'], POL.map(([p, , a, m, b]) => [plain(p), a, m, b]))}`;
   bindTips(el);
 })();
 
@@ -499,7 +499,7 @@ tabs($('#execTabs'), TASKS, (k) => {
   unwatch(pair);
   const [src, fail, ok] = EXEC[k];
   const fig = (side, good, txt) => `<figure>
-    <div class="vt-ph"><b class="${good ? 'is-ok' : 'is-bad'}">${good ? '+ VeriTouch data' : 'Real data only'}</b></div>
+    <div class="vt-ph"><b class="${good ? 'is-ok' : 'is-bad'}">${good ? 'VeriTouch' : 'Baseline'}</b></div>
     ${lazy(`policy/${src}_${side}_main`, 'controls')}
     <figcaption><strong class="${good ? 'pc-outcome-success' : 'pc-outcome-failure'}">${good ? 'Success' : 'Failure'} · </strong>${txt}</figcaption></figure>`;
   pair.innerHTML = `<div class="vt-pair one">${fig('base', false, fail)}${fig('vt', true, ok)}</div>`;
