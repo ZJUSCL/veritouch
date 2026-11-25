@@ -75,7 +75,7 @@
 <!-- ============================================================ PIPELINE -->
 <section class="vt-flow-sec" id="pipeline" aria-labelledby="pipeline-title">
   <header class="vt-sh" style="--c:var(--vt-eval)">
-    <h2 id="pipeline-title">One batch through the pipeline</h2>
+    <h2 id="pipeline-title">VeriTouch Pipeline</h2>
   </header>
   <!-- One batch through the pipeline: VeriGen -> VeriEval (four checks, dropped at the first failure) -> VeriIDM -> policy.
        Six real rollouts with their real verdicts (hero-data.js); driven by hero.js. -->
@@ -89,7 +89,6 @@
     <div class="vt-flow">
       <article class="vt-stage" style="--c:var(--vt-gen)">
         <header><span class="vt-n">1</span><h3>VeriGen</h3><a class="vt-go" href="#generated" title="Generated vs. real" aria-label="VeriGen: Generated vs. real"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
-        <p class="vt-k">Generates video and touch from a first frame and an instruction</p>
         <div class="vt-inputs vt-a" id="vtInputs">
           <figure><img src="assets/fig/hero_init_egg.jpg" alt="First frame, egg pick"><figcaption>egg</figcaption></figure>
           <figure><img src="assets/fig/hero_init_chip.jpg" alt="First frame, chip pick"><figcaption>chip</figcaption></figure>
@@ -103,25 +102,21 @@
       <div class="vt-link" style="--c:var(--vt-eval)" aria-hidden="true"><i></i><span>6</span></div>
       <article class="vt-stage" style="--c:var(--vt-eval)">
         <header><span class="vt-n">2</span><h3>VeriEval</h3><a class="vt-go" href="#verification" title="Why verify" aria-label="VeriEval: Why verify"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
-        <p class="vt-k">Four checks in order; a rollout is dropped at its first failure</p>
         <div class="vt-grid" id="vtGrid"></div>
         <div class="vt-lens is-empty" id="vtLens" aria-live="polite"></div>
       </article>
       <div class="vt-link" style="--c:var(--vt-idm)" aria-hidden="true"><i></i><span>2</span></div>
       <article class="vt-stage" style="--c:var(--vt-idm)">
         <header><span class="vt-n">3</span><h3>VeriIDM</h3><a class="vt-go" href="#idm" title="Action extraction" aria-label="VeriIDM: Action extraction"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
-        <p class="vt-k">Recovers an action for every frame from both camera views</p>
         <div class="vt-lab" id="vtLab"></div>
         <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
         <div class="vt-model vt-idmbox vt-a" id="vtIDM">Inverse dynamics model</div>
         <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
         <div class="vt-acts vt-a" id="vtActs"><span>â<sub>0</sub></span><span>â<sub>1</sub></span><span class="is-gap">…</span><span>â<sub>T</sub></span></div>
-        <div class="vt-sr vt-idmsr vt-a" id="vtIDMsr"><b>94.0%</b><small>of extracted actions succeed when replayed on the real robot (best baseline 84.0%)</small></div>
       </article>
       <div class="vt-link" style="--c:var(--vt-pol)" aria-hidden="true"><i></i><span>2</span></div>
       <article class="vt-stage" style="--c:var(--vt-pol)">
         <header><span class="vt-n">4</span><h3>Policy</h3><a class="vt-go" href="#results" title="Results" aria-label="Policy: Results"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
-        <p class="vt-k">Trained on real and verified synthetic demos, mixed 1 : 1</p>
         <div class="vt-mix" id="vtMix"><span class="r">real</span><span class="s">synthetic</span></div>
         <div class="vt-pols vt-a" id="vtPols" role="group" aria-label="Policy"></div>
         <figure class="vt-robot vt-a" id="vtRobot">
