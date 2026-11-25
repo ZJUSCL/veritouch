@@ -40,7 +40,7 @@
       const ok = g < r.fail;
       return `<span class="vt-cell ${ok ? 'is-ok' : 'is-bad'}" data-g="${g}"><i class="fa-solid ${ok ? 'fa-check' : 'fa-xmark'}"></i></span>`;
     }).join('')}</div>`).join('');
-  lab.innerHTML = kept.map((r) => `<div class="vt-lrow"><span class="vt-views"><figure><img src="${r.img}_main.jpg" alt=""><figcaption>third-person</figcaption></figure><figure><img src="${r.img}_wrist.jpg" alt=""><figcaption>wrist</figcaption></figure></span>
+  lab.innerHTML = kept.map((r) => `<div class="vt-lrow"><span class="vt-views"><figure><img src="${r.img}_main.jpg" alt=""><figcaption>main</figcaption></figure><figure><img src="${r.img}_wrist.jpg" alt=""><figcaption>wrist</figcaption></figure></span>
     <span class="vt-who3">${r.name}</span><b class="vt-badge" title="${r.name}: actions extracted">&acirc;</b></div>`).join('');
 
   const tiles = $$('.vt-tile'), rows = $$('.vt-row[data-i]'), heads = $$('.vt-th button'), lrows = $$('.vt-lrow');

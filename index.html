@@ -106,7 +106,7 @@
         <div class="vt-lens is-empty" id="vtLens" aria-live="polite"></div>
       </article>
       <div class="vt-link" style="--c:var(--vt-idm)" aria-hidden="true"><i></i><span>2</span></div>
-      <article class="vt-stage" style="--c:var(--vt-idm)">
+      <article class="vt-stage is-idm" style="--c:var(--vt-idm)">
         <header><span class="vt-n">3</span><h3>VeriIDM</h3><a class="vt-go" href="#idm" title="Action extraction" aria-label="VeriIDM: Action extraction"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
         <div class="vt-lab" id="vtLab"></div>
         <div class="vt-down" aria-hidden="true"><i class="fa-solid fa-angles-down"></i></div>
@@ -115,12 +115,12 @@
         <div class="vt-acts vt-a" id="vtActs"><span>â<sub>0</sub></span><span>â<sub>1</sub></span><span class="is-gap">…</span><span>â<sub>T</sub></span></div>
       </article>
       <div class="vt-link" style="--c:var(--vt-pol)" aria-hidden="true"><i></i><span>2</span></div>
-      <article class="vt-stage" style="--c:var(--vt-pol)">
+      <article class="vt-stage is-pol" style="--c:var(--vt-pol)">
         <header><span class="vt-n">4</span><h3>Policy</h3><a class="vt-go" href="#results" title="Results" aria-label="Policy: Results"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></header>
         <div class="vt-mix" id="vtMix"><span class="r">real</span><span class="s">synthetic</span></div>
         <div class="vt-pols vt-a" id="vtPols" role="group" aria-label="Policy"></div>
         <figure class="vt-robot vt-a" id="vtRobot">
-          <div class="vt-rcmp-hd"><span class="is-bad"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Real only</span><span class="is-ok"><i class="fa-solid fa-check" aria-hidden="true"></i> + VeriTouch</span></div>
+          <div class="vt-rcmp-hd"><span class="is-bad"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Baseline</span><span class="is-ok"><i class="fa-solid fa-check" aria-hidden="true"></i> VeriTouch</span></div>
           <div class="vt-rcmp-vid">
             <video muted playsinline loop preload="metadata" src="assets/video/policy/hero_n0_cmp.mp4" poster="assets/video/policy/hero_n0_cmp.jpg"></video>
             <i class="vt-rcmp-sep" aria-hidden="true"></i>
@@ -128,7 +128,7 @@
           </div>
           <figcaption id="vtRobotCap"><span class="is-bad">Misses the egg</span><span class="is-ok">Places egg on tray</span></figcaption>
         </figure>
-        <div class="vt-sr vt-a" id="vtSR"><b><s id="vtSRa">31.3%</s> → <output id="vtSRv">51.7%</output></b><small><span id="vtSRn"><span class="vt-cal">𝒩</span><sub>0</sub>-VTLA</span>: real only → + VeriTouch</small><small class="vt-avg">Mean of the four policies: 19.4% → 33.8%</small></div>
+        <div class="vt-sr vt-a" id="vtSR"><b><s id="vtSRa">31.3%</s> → <output id="vtSRv">51.7%</output></b><small id="vtSRn"><span class="vt-cal">𝒩</span><sub>0</sub>-VTLA</small></div>
       </article>
     </div>
   </div>
